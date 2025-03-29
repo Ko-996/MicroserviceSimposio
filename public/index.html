@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registro para simposio</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h2>Registro de Alumnos para el Simposio</h2>
+      <div class="header">
+        
+        <button onclick="window.location.href='list.html'">Lista de Alumnos</button>
+      </div>
+      <form id="alumnoForm">
+        <div class="form-row">
+          <label for="carnet_carrera">Carnet Carrera</label>
+          <input type="text" id="carnet_carrera" name="carnet_carrera" required maxlength="5">
+        </div>
+        <div class="form-row">
+          <label for="carnet_ano">Carnet Año</label>
+          <input type="text" id="carnet_ano" name="carnet_ano" required maxlength="2">
+        </div>
+        <div class="form-row">
+          <label for="carnet_serie">Carnet Serie</label>
+          <input type="text" id="carnet_serie" name="carnet_serie" required maxlength="8">
+        </div>
+        <div class="form-row">
+          <label for="primer_nombre">Primer Nombre</label>
+          <input type="text" id="primer_nombre" name="primer_nombre" required maxlength="20">
+        </div>
+        <div class="form-row">
+          <label for="segundo_nombre">Segundo Nombre</label>
+          <input type="text" id="segundo_nombre" name="segundo_nombre" maxlength="20">
+        </div>
+        <div class="form-row">
+          <label for="primer_apellido">Primer Apellido</label>
+          <input type="text" id="primer_apellido" name="primer_apellido" required maxlength="20">
+        </div>
+        <div class="form-row">
+          <label for="segundo_apellido">Segundo Apellido</label>
+          <input type="text" id="segundo_apellido" name="segundo_apellido" maxlength="20">
+        </div>
+        <div class="form-row">
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono" name="telefono" maxlength="15">
+        </div>
+        <div class="form-row">
+          <label for="correo_electronico">Correo Electrónico</label>
+          <input type="email" id="correo_electronico" name="correo_electronico" required maxlength="100">
+        </div>
+        <div class="form-row">
+          <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+          <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+        </div>
+        <div class="form-row center">
+          <button class="btn2" type="submit">Registrar Alumno</button>
+        </div>
+      </form>
+      <div id="message" class="message"></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('alumnoForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const alumno = {
+        carnet_carrera: document.getElementById('carnet_carrera').value,
+        carnet_ano: document.getElementById('carnet_ano').value,
+        carnet_serie: document.getElementById('carnet_serie').value,
+        primer_nombre: document.getElementById('primer_nombre').value,
+        segundo_nombre: document.getElementById('segundo_nombre').value,
+        primer_apellido: document.getElementById('primer_apellido').value,
+        segundo_apellido: document.getElementById('segundo_apellido').value,
+        telefono: document.getElementById('telefono').value,
+        correo_electronico: document.getElementById('correo_electronico').value,
+        fecha_nacimiento: document.getElementById('fecha_nacimiento').value
+      };
+
+      fetch('/alumnos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(alumno)
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('message').textContent = 'Alumno registrado exitosamente!';
+        document.getElementById('alumnoForm').reset();
+      })
+      .catch(error => {
+        document.getElementById('message').textContent = 'Error al registrar el alumno.';
+      });
+    });
+  </script>
+</body>
+</html>

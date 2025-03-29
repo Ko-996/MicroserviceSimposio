@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lista de Alumnos</title>
+  <link rel="stylesheet" href="css/styleList.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h2>Lista de Alumnos Registrados</h2>
+      <button onclick="window.location.href='index.html'">Registrar Nuevo Alumno</button>
+      <table class="alumnos-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Carrera</th>
+            <th>Año</th>
+            <th>Serie</th>
+            <th>Primer Nombre</th>
+            <th>Segundo Nombre</th>
+            <th>Primer Apellido</th>
+            <th>Segundo Apellido</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Fecha Nacimiento</th>
+            <th>Fecha Registro</th>
+          </tr>
+        </thead>
+        <tbody id="alumnosBody">
+          <!-- Los registros se llenarán dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    async function fetchAlumnos() {
+      try {
+        const response = await fetch('/alumnos');
+        const alumnos = await response.json();
+        const tbody = document.getElementById('alumnosBody');
+        tbody.innerHTML = '';
+        alumnos.forEach(alumno => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${alumno.id}</td>
+            <td>${alumno.carnet_carrera}</td>
+            <td>${alumno.carnet_ano}</td>
+            <td>${alumno.carnet_serie}</td>
+            <td>${alumno.primer_nombre}</td>
+            <td>${alumno.segundo_nombre || ''}</td>
+            <td>${alumno.primer_apellido}</td>
+            <td>${alumno.segundo_apellido || ''}</td>
+            <td>${alumno.telefono || ''}</td>
+            <td>${alumno.correo_electronico}</td>
+            <td>${alumno.fecha_nacimiento}</td>
+            <td>${alumno.fecha_registro}</td>`;
+          tbody.appendChild(tr);
+        });
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+    window.onload = fetchAlumnos;
+  </script>
+</body>
+</html>
